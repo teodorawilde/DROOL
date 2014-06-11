@@ -1,0 +1,97 @@
+﻿
+@{
+    ViewBag.Title = "DocumentationEn";
+}
+
+@using (Html.BeginForm())
+{
+    <button type="button" onclick="window.location.href = '/Home/DocumentationEn'" class="btn btn-default" style="float: right; display: inline-block;">
+        <img src="/Content/Images/ukFlag.png" />
+    </button>
+
+    <button type="button" onclick="window.location.href = '/Home/DocumentationRo'" class="btn btn-default" style="float: right; display: inline-block;">
+        <img src="/Content/Images/romanianFlag.png" />
+    </button>
+}
+<br /><br />
+
+<h1 style="text-align: center; font-family: 'Wide Latin'; max-height:100%; max-width:100%;"><b>Documentation</b></h1><br />
+
+
+<h3 id="chapter1" style="font-family: Georgia;"><b>1. Used currency APIs</b></h3>
+<div>
+    The application DROOL is a web instrument design for vizualization, comparing and converting virtual 
+    currencies between them or according to real ones. In the project there where used a number of five
+    external APIs that return data in JSON format. This data is taken depending on the API used retening 
+    in dynamic objects information like the value of bitcoin and the volume of the transactions for every
+    type of currency. In what it concernes virtual coins, the application DROOL uses coins of type Bitcoin
+    and Litcoin.<br />
+
+    <b>External APIs used:</b><br />
+    <b>1. Bitfinex: </b>https://api.bitfinex.com/v1/ticker/btcusd <br />
+    <b>2. Bitstamp: </b>https://www.bitstamp.net/api/ticker/ <br />
+    <b>3. Blockchain: </b>https://blockchain.info/ro/ticker <br />
+    <b>4. BTC-e: </b>https://btc-e.com/api/2/btc_usd/ticker <br />
+    <b>5. Local Bitcoins: </b>https://localbitcoins.com/bitcoinaverage/ticker-all-currencies/ <br />
+
+</div>
+<h3 id="chapter2" style="font-family: Georgia;"><b>2. Currency Visualizer</b></h3> 
+<div>
+    The application offers the user the chance to select different coins and watch a graph with its fluctuation.
+    The graph depends mainly on the APIs selected by the user, because depending on them there will be available
+    or not different types of currencies. In addition, depending on the APIs selected the resulted values
+    from the conversions will be different. This is happening because every API returns different values
+    according do the currency desired and when choosing the same coins for more than one APIs simultaneously,
+    the resulted values will be calculated based on a mean.
+
+    The user has the option of choosing an API he wants to interrogate to obtain values select or deselecting
+    one or more checkboxes, as well as choosing to currencies for comparison<br />
+
+    The graph shows the fluctuation between two coins's values. The value of a coin is divided by 100 or if more than
+    one API is selected for the same two coins, the value wanted is calculated with the mean of all the values for those
+    coins relative to all the APIs. On the Oy axe it shows the value wanted and the first coin selected is the 100 part
+    of the other one.<b/>
+
+</div>
+<h3 id="chapter3" style="font-family:georgia;"><b>3. Currency Converter</b></h3>
+<div>
+    The application displays users a page design for currency conversion. The currency conversion
+    depends mainly on the APIs selected by the user, because that determines the types of currencies
+    available. In addition, depending on the APIs selected, the values resulted from the conversions
+    will be different. This case happens because every API returns different values depending on the
+    coin desired and when the conversion is done simultaneously with more than one API, the resulted 
+    values will be calculated based on a mean. The mean to calculate the final result is a weighted 
+    mean that is represented by the volume of the transactions of every application.<br />
+
+    Using technologies like Angular Js and AJAX, visualy, the values change at the same time with the
+    updates that come in every API used, as well as when multiple APIs are selected or deselected
+    without having to press a button to call the conversion. Implicitly it will be shown the value 1
+    in the textbox on the further left and it will be converted depending on the type of coin selected 
+    on the right. To change the value to be converted, the user needs to add a value he wants in the box where 
+    initially it was the value "1".<br />
+</div>
+<h3 id="chapter4" style="font-family: Georgia;"><b>4. Currency Comparison</b></h3>
+<div>
+    The application offers the user as well a separate page for comparing currencies. This comparison
+    is done depending on the APIs selected at a given time by the user. As each API can return different values
+    for the same type of currency, the values displayed on the screen will be strictly influenced by the API
+    or APIs that contribute to the comparing process.<br />
+    Visualy, the user can compare currencies's values based on a tabel. He will be able to see
+    on the columns of the table the type of currencies supported by the selected API. This coins will appear
+    on every single line of the table in the same order, finally forming a matrice that has the value "1.00"
+    on the main diagonal (top left -> bottom right).<br />
+
+    The user has the option of choosing an API he wants to interrogate to obtain values destined for comparison
+    as close to his interests as possible. Using the checkboxes he can select or deselect APIs he wants to use.<br />
+
+    The matrix is generated using the technologies Javascript and Angular JS. For every box strings of the type
+    "from/to" will be formed first and after the conversion that function that specifys the APIs selected will be called.
+</div>
+<h3 id="chapter4" style="font-family: Georgia;"><b>5. Other observations </b></h3>
+<div>
+    The application DROOL offers a web service exploatable according the paradigm REST:<br />
+    1. Server state-less<br/>
+    2. Create-Read-Update-Delete (MVC Project)<br/>
+    3. URIs - API/Currencies/Blockchain/1/EUR/BTC<br/>
+    4. Data in JSON/XML format<br/>
+</div>

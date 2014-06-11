@@ -1,0 +1,224 @@
+﻿
+@{
+    ViewBag.Title = "UserGuideEn";
+}
+
+<script src="~/Scripts/jquery-1.11.0.min.js"></script>
+<script type="text/javascript"></script>
+
+<div class="body-c" style="float: right; display: inline-block;">
+
+    <div class=" dark-bg"></div>
+
+    <div class="modal video-modal">
+        <video id="my_video" width="550" height="320" controls="controls">
+            <source src="~/Content/The Dark Knight.webm">
+        </video>
+
+    </div>
+    <input type="submit" value="Tutorial!" class="modal-button" data-modal=".video-modal" style="background:white;padding: 8px 14px 10px; border: 1px solid #808080; text-shadow: 0 -1px 0px rgba(0, 0, 0, 0.3); -webkit-border-radius: 5px; -moz-border-radius: 5px; ">
+</div>
+<style>
+    .body-c {
+        margin: 0;
+    }
+
+    .dark-bg {
+        display: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.7);
+    }
+
+    .modal {
+        overflow: hidden;
+        display: none;
+        position: absolute;
+        width: 500px;
+        height: 500px;
+        top: 50%;
+        margin-top: -120px;
+        left: 50%;
+        margin-left: -120px;
+        background: rgba(0,0,0,0);
+        padding: 20px;
+        -webkit-border-radius: 10px;
+        -moz-border-radius: 10px;
+        border-radius: 10px;
+    }
+</style>
+
+<script>
+
+    $(".modal-button").click(openModal);
+    $(".dark-bg").click(closeModal);
+    $(".modal").click(function () {
+
+        e.stopPropagation();
+    });
+
+    function openModal(e) {
+        $(".dark-bg").fadeIn(200);
+        $($(this).data("modal")).fadeIn(100);
+        my_video.load();
+    }
+
+    function closeModal() {
+        $(".dark-bg").fadeOut(200);
+        $(".modal").fadeOut(100);
+        my_video.pause();
+    }
+
+</script>
+
+
+@using (Html.BeginForm())
+{
+    
+    <button type="button" onclick="window.location.href = '/Home/UserGuideEn'" class="btn btn-default" style="float: right; display: inline-block;">
+        <img src="/Content/Images/ukFlag.png" />
+    </button>
+
+    <button type="button" onclick="window.location.href = '/Home/UserGuideRo'" class="btn btn-default" style="float: right; display: inline-block;">
+        <img src="/Content/Images/romanianFlag.png" />
+    </button>
+}
+<br/><br/>
+    
+
+<h1 style="text-align: center; font-family: 'Wide Latin';max-height:100%; max-width:100%;"><b>User Guide</b></h1>
+
+@using (Html.BeginForm())
+{
+    <div style="margin-left:100px;">
+    <button type="button" onclick="window.location.href='#chapter2'" class="btn btn-default" style="width: 308px; display: inline-block;">
+        <img src="/Content/Images/SCVisualizer.jpg" style="margin-right:1px;"/>
+    </button>
+
+    <button type="button" onclick="window.location.href='#chapter3'" class="btn btn-default" style=" width: 308px; display: inline-block;">
+        <img src="/Content/Images/BCConverter.jpg" />
+    </button>
+
+    <button type="button" onclick="window.location.href='#chapter4'" class="btn btn-default" style="width: 308px; display: inline-block;">
+        <img src="/Content/Images/BCComparison.jpg" />
+    </button>
+    </div>
+}
+
+<div style="max-width:100%; max-height:100%">
+<h3 id="chapter1" style="font-family: Georgia;"><b>1. Used currency APIs</b></h3>
+<div class="box1">
+    Aplicatia DROOL este un instrument Web destinat pentru vizualizarea, compararea si transformarea
+    cursurilor valutare virtuale intre ele sau in concordanta cu cele reale.
+    API-urile externe folosite cat si tipurile de monezi suportate de fiecare in parte sunt:<br />
+    <b>Bitfinex:</b> "USD", "BTC", "LTC";<br />
+    <b>Bitstamp:</b> "USD", "BTC";<br />
+    <b>Blockchain:</b> "USD", "EUR", "CNY","JPY","SGD","HKD", "CAD", "NZD", "AUD", "CLP",
+    "GBP", "DKK", "SEK", "ISK", "CHF", "BRL", "RUB", "PLN", "THB", "KRW", "TWD", "BTC";<br />
+    <b>BTC-e:</b> "USD", "EUR", "GBP", "RUR", "CNH", "BTC", "LTC";<br />
+    <b>Local Bitcoins:</b> "USD", "EUR", "GBP", "RUB", "BRL", "MYR", "MXN", "CAD", "ZAR",
+    "COP", "ARS", "THB", "SGD", "SEK", "NZD", "CZK", "CLP", "HKD", "INR", "AUD", "PHP", "AED",
+    "NOK", "CNY", "CHF", "RON", "HUF", "PLN", "BTC";<br />
+</div>
+    <h3 id="chapter2" style="font-family: Georgia;"><b>2. Currency Visualizer</b></h3> 
+    <div class="box2">
+
+        The application offers the user the chance to select different coins and watch a graph with its fluctuation.
+        The graph depends mainly on the APIs selected by the user, because depending on them there will be available
+        or not different types of currencies. In addition, depending on the APIs selected the resulted values
+        from the conversions will be different. This is happening because every API returns different values
+        according do the currency desired and when choosing the same coins for more than one APIs simultaneously, 
+        the resulted values will be calculated based on a mean.
+        <br /><br />
+        <div>
+            
+            <p style="font-family: Georgia;"> <b> Selecting APIs:</b></p><br />
+                The user has the option of choosing any APIs he wants to interrogate to obtain a value of
+                the conversion as close to his interests. Thanks to the checkboxes he can select or deselect
+                the APIs he wants to use.<br />
+            <img src="~/Content/Images/btcn.png" style=" max-height:100%; max-width:100%;" /><br />
+</div>
+
+        <p style="font-family: Georgia;">
+            <b>Selecting currencies:</b></p><br />
+        <p>
+            The user has available two buttons with which he can select the types of coins to check the fluctuation process
+            between.According to the APIs selected it is possible that some coins will not be shown in the
+            available's coins list. The ones that are missing can appear if an API that has this type of coins available is selected.
+        </p> 
+        <img src="~/Content/Images/btcn2.png" style=" max-height:100%; max-width:100%;" /><br />
+
+        Depending on the APIs and currencies selected, the graph will variate differently:<br />
+        <img src="~/Content/Images/btcn3.png" style="width:900px; height:400px; max-height:100%; max-width:100%;" />
+
+    </div>
+    <h3 id="chapter3" style="font-family:georgia;"><b>3. Currency Converter</b></h3>
+    <div class="box3">
+        <p>
+
+            The application provides users a page dedicated to currency conversion. Currency conversion
+            depends mainly on the APIs selected by the user because depending on them there will be available
+            or not different types of currencies. In addition, depending on the APIs selected the resulted values
+            from the conversions will be different. This is happening because every API returns different values
+            according do the currency desired and when the conversion is being made with multiple APIs being selected,
+            the resulted values will be calculated according a mean.
+
+        </p>
+        <div>
+            <p style=" font-family:georgia;"> <b> Selecting APIs:</b></p><br />
+                The user has the option of choosing any APIs he wants to interrogate to obtain a value of
+                the conversion as close to his interests. Thanks to the checkboxes he can select or deselect
+                the APIs he wants to use.<br />
+            <img src="~/Content/Images/checkBoxes.png" style=" max-height:100%; max-width:100%;" /><br />
+</div>
+        <div>
+            <p style=" font-family:georgia;"> <b> Selecting currencies:</b> </p> <br />
+                The user has available two buttons with which he can select the types of coins to make conversion
+                between. According to the APIs selected it is possible that some coins will not be shown in the
+                available's coins list (like in the example shown in the images below). The ones that are missing
+                can appear if an API that has this type of coins available is selected.<br />
+            <img src="~/Content/Images/dropDowns.png" style=" max-height:100%; max-width:100%;" />
+            <img src="~/Content/Images/dropDowns2.png" style=" max-height:100%; max-width:100%;" /><br />
+</div>
+        <div>
+            <p style=" font-family:georgia;"> <b> Completing the values to be converted:</b></p><br />
+                The implicit values that will appear in the left box is 1 and it will be converted depending on
+                the type of coin selected in the right box. To change the value to be converted, the user has to
+                add in the box where initially it was displayed the value "1" another values he desires.<br />
+            <img src="~/Content/Images/changeValue.png" style=" max-height:100%; max-width:100%;" />
+            <img src="~/Content/Images/changeValue2.png" style=" max-height:100%; max-width:100%;" /><br />
+</div>
+        <p>
+            <b>***</b> Since the values returned by the external APIs used are updating at a period of time,
+            without the user doing something in this perspective, in the page there will be shown a new value in
+            the correspondig box like in the example below.<br />
+            <img src="~/Content/Images/changedValue.png" style=" max-height:100%; max-width:100%;" />
+            <img src="~/Content/Images/changedValue2.png" style=" max-height:100%; max-width:100%;" /><br />
+        </p>
+    </div>
+
+    <h3 id="chapter4" style="font-family: Georgia;"><b>4. Currency comparison</b></h3>
+    <div class="box4">
+        The application offers the user as well a separate page for comparing currencies. This comparison
+        is done depending on the APIs selected at a given time by the user. As each API can return different values
+        for the same type of currency, the values displayed on the screen will be strictly influenced by the API
+        or APIs that contribute to the comparing process.<br />
+
+        Visualy, the user can compare currencies's values based on a tabel. He will be able to see
+        on the columns of the table the type of currencies supported by the selected API. This coins will appear
+        on every single line of the table in the same order, finally forming a matrice that has the value "1.00"
+        on the main diagonal (top left -> bottom right).<br />
+
+        <p style=" font-family:georgia;"><b> Selecting the APIs:</b></p><br />
+            The user has the possibility of choosing whatever API he wants to interrogate to obtain values for comparison
+            as close to his interests. Based on the checkboxes, he can select or deselect the APIs he wants to use.<br />
+        <img src="~/Content/Images/checkBoxes.png" style=" max-height:100%; max-width:100%;" /><br />
+
+            Based on the APIs selected the table can have different dimensions:<br />
+        <img src="~/Content/Images/comparisonTable.png" style=" max-height:100%; max-width:100%;" />
+        <img src="~/Content/Images/comparisonTable2.png" style=" max-height:100%; max-width:100%;" /><br />
+</div>
+</div>

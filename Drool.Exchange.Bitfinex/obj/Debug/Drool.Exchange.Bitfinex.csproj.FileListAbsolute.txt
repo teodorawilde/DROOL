@@ -1,0 +1,15 @@
+C:\Users\teodora\Documents\Visual Studio 2013\Projects\MEFMvc\MEFMvc\Exchanges\Drool.Exchange.Bitfinex.dll
+C:\Users\teodora\Documents\Visual Studio 2013\Projects\MEFMvc\MEFMvc\Exchanges\Drool.Exchange.Bitfinex.pdb
+C:\Users\teodora\Documents\Visual Studio 2013\Projects\MEFMvc\Drool.Exchange.Bitfinex\bin\Debug\Drool.Exchange.Bitfinex.dll
+C:\Users\teodora\Documents\Visual Studio 2013\Projects\MEFMvc\Drool.Exchange.Bitfinex\bin\Debug\Drool.Exchange.Bitfinex.pdb
+C:\Users\teodora\Documents\Visual Studio 2013\Projects\MEFMvc\Drool.Exchange.Bitfinex\bin\Debug\Drool.Entities.dll
+C:\Users\teodora\Documents\Visual Studio 2013\Projects\MEFMvc\Drool.Exchange.Bitfinex\bin\Debug\Newtonsoft.Json.dll
+C:\Users\teodora\Documents\Visual Studio 2013\Projects\MEFMvc\Drool.Exchange.Bitfinex\bin\Debug\Drool.Entities.pdb
+C:\Users\teodora\Documents\Visual Studio 2013\Projects\MEFMvc\Drool.Exchange.Bitfinex\bin\Debug\Newtonsoft.Json.xml
+C:\Users\teodora\Documents\Visual Studio 2013\Projects\MEFMvc\Drool.Exchange.Bitfinex\obj\Debug\Drool.Exchange.Bitfinex.csprojResolveAssemblyReference.cache
+C:\Users\teodora\Documents\Visual Studio 2013\Projects\MEFMvc\Drool.Exchange.Bitfinex\obj\Debug\Drool.Exchange.Bitfinex.dll
+C:\Users\teodora\Documents\Visual Studio 2013\Projects\MEFMvc\Drool.Exchange.Bitfinex\obj\Debug\Drool.Exchange.Bitfinex.pdb
+C:\Users\teodora\Documents\Visual Studio 2013\Projects\MEFMvc\Drool.Exchange.Bitfinex\bin\Debug\MongoDB.Bson.dll
+C:\Users\teodora\Documents\Visual Studio 2013\Projects\MEFMvc\Drool.Exchange.Bitfinex\bin\Debug\MongoDB.Driver.dll
+C:\Users\teodora\Documents\Visual Studio 2013\Projects\MEFMvc\Drool.Exchange.Bitfinex\bin\Debug\MongoDB.Bson.xml
+C:\Users\teodora\Documents\Visual Studio 2013\Projects\MEFMvc\Drool.Exchange.Bitfinex\bin\Debug\MongoDB.Driver.xml

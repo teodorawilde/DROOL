@@ -1,0 +1,224 @@
+﻿
+@{
+    ViewBag.Title = "UserGuideRo";
+}
+
+<script src="~/Scripts/jquery-1.11.0.min.js"></script>
+<script type="text/javascript"></script>
+
+<div class="body-c" style="float: right; display: inline-block;">
+
+    <div class=" dark-bg"></div>
+
+    <div class="modal video-modal">
+        <video id="my_video" width="550" height="320" controls="controls">
+            <source src="~/Content/The Dark Knight.webm">
+        </video>
+
+    </div>
+    <input type="submit" value="Tutorial!" class="modal-button" data-modal=".video-modal" style="background:white;padding: 8px 14px 10px; border: 1px solid #808080; text-shadow: 0 -1px 0px rgba(0, 0, 0, 0.3); -webkit-border-radius: 5px; -moz-border-radius: 5px; ">
+</div>
+<style>
+    .body-c {
+        margin: 0;
+    }
+
+    .dark-bg {
+        display: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.7);
+    }
+
+    .modal {
+        overflow: hidden;
+        display: none;
+        position: absolute;
+        width: 500px;
+        height: 500px;
+        top: 50%;
+        margin-top: -120px;
+        left: 50%;
+        margin-left: -120px;
+        background: rgba(0,0,0,0);
+        padding: 20px;
+        -webkit-border-radius: 10px;
+        -moz-border-radius: 10px;
+        border-radius: 10px;
+    }
+</style>
+
+<script>
+
+    $(".modal-button").click(openModal);
+    $(".dark-bg").click(closeModal);
+    $(".modal").click(function () {
+
+        e.stopPropagation();
+    });
+
+    function openModal(e) {
+        $(".dark-bg").fadeIn(200);
+        $($(this).data("modal")).fadeIn(100);
+        my_video.load();
+    }
+
+    function closeModal() {
+        $(".dark-bg").fadeOut(200);
+        $(".modal").fadeOut(100);
+        my_video.pause();
+    }
+
+</script>
+
+
+@using (Html.BeginForm())
+{
+    <button type="button" onclick="window.location.href = '/Home/UserGuideEn'" class="btn btn-default" style="float: right; display: inline-block;">
+        <img src="/Content/Images/ukFlag.png" />
+    </button>
+    
+    <button type="button" onclick="window.location.href = '/Home/UserGuideRo'" class="btn btn-default" style="float: right; display: inline-block;">
+        <img src="/Content/Images/romanianFlag.png" />
+    </button>
+}
+<br/><br/>
+    
+
+
+<h1 style="text-align: center; font-family: 'Wide Latin'; max-height:100%; max-width:100%;"><b>Ghidul utilizatorului</b></h1><br/>
+
+@using (Html.BeginForm())
+{
+    <div style="margin-left:100px;">
+        <button type="button" onclick="window.location.href='#chapter2'" class="btn btn-default" style="width: 308px; display: inline-block;">
+            <img src="/Content/Images/SCVisualizer.jpg" style="margin-right:1px;" />
+        </button>
+
+        <button type="button" onclick="window.location.href='#chapter3'" class="btn btn-default" style=" width: 308px; display: inline-block;">
+            <img src="/Content/Images/BCConverter.jpg" />
+        </button>
+
+        <button type="button" onclick="window.location.href='#chapter4'" class="btn btn-default" style="width: 308px; display: inline-block;">
+            <img src="/Content/Images/BCComparison.jpg" />
+        </button>
+    </div>
+}
+
+<div style="overflow:hidden;">
+<h3 id="chapter1" style="font-family: Georgia;"><b>1. API-uri externe utilizate</b></h3>
+<div class="box1">
+    Aplicatia DROOL este un instrument Web destinat pentru vizualizarea, compararea si transformarea
+    cursurilor valutare virtuale intre ele sau in concordanta cu cele reale.
+    API-urile externe folosite cat si tipurile de monezi suportate de fiecare in parte sunt:<br />
+    <b>Bitfinex:</b> "USD", "BTC", "LTC";<br />
+    <b>Bitstamp:</b> "USD", "BTC";<br />
+    <b>Blockchain:</b> "USD", "EUR", "CNY","JPY","SGD","HKD", "CAD", "NZD", "AUD", "CLP",
+     "GBP", "DKK", "SEK", "ISK", "CHF", "BRL", "RUB", "PLN", "THB", "KRW", "TWD", "BTC";<br />
+    <b>BTC-e:</b> "USD", "EUR", "GBP", "RUR", "CNH", "BTC", "LTC";<br />
+    <b>Local Bitcoins:</b> "USD", "EUR", "GBP", "RUB", "BRL", "MYR", "MXN", "CAD", "ZAR",
+     "COP", "ARS", "THB", "SGD", "SEK", "NZD", "CZK", "CLP", "HKD", "INR", "AUD", "PHP", "AED",
+     "NOK", "CNY", "CHF", "RON", "HUF", "PLN", "BTC";<br />
+</div>
+
+<h3 id="chapter2" style="font-family: Georgia;"><b>2. Vizualizare valori valuta</b></h3><br/>
+<div class="box2">
+    Aplicatia pune la dispozitia utilizatorilor o pagina destinata afisarii fluctuatiei dintre doua monezi.
+    Graful creat depinde in principal de API-urile selectate de utilizator, deoarece in functie de acestea
+    vor fi disponibile sau nu mai multe tipuri de monede valutare. In functie de API-urile selectate, valorile 
+    intre care se realizeaza fluctuatia, vor fi diferite. Acest lucru se realizeaza deoarece fiecare API intoarce
+    valori diferite in functie de moneda dorita, iar atunci cand se aleg aceleasi monede pentru mai multe API-uri
+    simultan, valoarea rezultata se va calcula pe baza unei medii.
+
+    <br /><br/>
+    <div>
+        <p style=" font-family:georgia;"><b> Selectarea API-urilor:</b></p><br />
+            Utilizatorul are posibilitatea de a alege ce API-uri doreste sa interogheze pentru a obtine
+            o valoare a conversiei cat mai apropiata de interesele lui. Pe baza check-box-urilor acestea
+            va putea selecta sau deselecta API-urile ce doreste sa le foloseasca. <br />
+        <img src="~/Content/Images/btcn.png" style=" max-height:100%; max-width:100%;" /><br />
+</div>
+
+    <div><p style=" font-family:georgia;"><b>Selectarea monedelor valutare:</b></p><br />
+    Utilizatorul are la dispozitie doua butoane de unde poate selecta care sunt tipurile de monezi intre care
+    va avea loc procesul de fluctuatie.In functie de API-ul selectat este posibil ca anumite monezi sa nu apara
+    in lista celor disponibile. Acele monezi care acum lipsesc pot aparea daca un API ce este selectat suporta respectivul tip.
+</div>
+    <img src="~/Content/Images/btcn2.png" style=" max-height:100%; max-width:100%;" /><br />
+
+    In functie de API-urile si valutele selectate graful va varia diferit:<br />
+    <img src="~/Content/Images/btcn3.png" style=" max-height:100%; max-width:100%;" />
+
+</div>
+    <h3 id="chapter3" style="font-family: Georgia;"><b>3. Convertor valuta </b></h3>
+    <div class="box3">
+    <p>
+        Aplicatia pune la dispozitia utilizatorilor o pagina destinata conversiilor valutare.
+        Conversia valutara depinde in principal de API-urile selectate de utilizator, deoarece in
+        functie de acestea vor fi disponibile sau nu mai multe tipuri de monede valutare. In plus,
+        in functie de API-urile selectate, valorile rezultate in urma conversiilor vor fi diferite.
+        Acest lucru se realizeaza deoarece fiecare API intoarce valori diferite in functie de moneda
+        dorita, iar atunci cand conversia de face simultan in functie de mai multe API-uri valoarea
+        rezultata se va calcula pe baza unei medii.
+    </p>
+    <div>
+        <p style=" font-family:georgia;"><b> Selectarea API-urilor:</b></p><br />
+            Utilizatorul are posibilitatea de a alege ce API-uri doreste sa interogheze pentru a obtine
+            o valoare a conversiei cat mai apropiata de interesele lui. Pe baza check-box-urilor acestea
+            va putea selecta sau deselecta API-urile ce doreste sa le foloseasca. <br />
+        <img src="~/Content/Images/checkBoxes.png" style=" max-height:100%; max-width:100%;" /><br />
+</div>
+    <div>
+        <p style=" font-family:georgia;"><b> Selectarea monedelor valutare:</b></p><br />
+            Utilizatorul are la dispozitie doua butoane de unde poate selecta care sunt tipurile de monezi
+            intre care va avea loc conversia. In functie de API-ul selectat este posibil ca anumite monezi
+            sa nu apara in lista celor disponibile (exemplu in imaginile de mai jos). Acele monezi care
+            acum lipsesc pot aparea daca un API ce este selectat suporta respectivul tip. <br />
+        <img src="~/Content/Images/dropDowns.png" style=" max-height:100%; max-width:100%;" />
+        <img src="~/Content/Images/dropDowns2.png" style=" max-height:100%; max-width:100%;" /><br />
+</div>
+    <div>
+        <p style=" font-family:georgia;"><b> Completarea valorii ce va fi convertita:</b></p><br />
+            Implicit va aparea 1 in casuta cea mai din stanga si va fi convertita in functie de tipul de
+            moneda ce apare selectat in partea dreapta. Pentru a schimba valoarea ce urmeaza a fi convertita
+            utilizatorul trebuie sa adauge in casuta in care initial aparea valoarea "1" o alta valoare
+            dorita de acesta. <br />
+        <img src="~/Content/Images/changeValue.png" style=" max-height:100%; max-width:100%;" />
+        <img src="~/Content/Images/changeValue2.png" style=" max-height:100%; max-width:100%;" /><br />
+</div>
+    <p>
+        <b>***</b> Intrucat valorile returnate de API-urile externe folosite se actualizeaza la o
+        anumita perioada, fara ca utilizatorul sa realizeze vreo actiune, in pagina se va afisa noua
+        valoare in casuta corespunzatoare dupa modelul de mai jos. <br />
+        <img src="~/Content/Images/changedValue.png" style=" max-height:100%; max-width:100%;" />
+        <img src="~/Content/Images/changedValue2.png" style=" max-height:100%; max-width:100%;" /><br />
+    </p>
+
+    </div>
+    
+    <h3 id="chapter4" style="font-family: Georgia;"><b>4. Comparare valori valuta </b></h3>
+    <div class="box4">
+        Aplicatia pune la dispozitia utilizatorul si o pagina separata destinata compararii de
+        valori monetare. Aceasta comparare se realizeaza in functie de API-urile selectate la 
+        momentul respectiv de catre utilizator. Intrucat fiecare API poate intoarce valori diferite
+        pentru acelasi tip de moneda, valorile afisate pe ecran vor fi strict influentate de API-ul
+        sau API-urile ce contribuie la procesul de comparare. <br />
+        In plan vizual, utilizatorul va putea face compararea pe baza unui tabel. Acesta va vedea
+        drept coloane ale tabelului tipurile de moneda suportate de API-ul selectat. Aceste monede
+        vor reaparea pe fiecare linie a tabelului in aceeasi ordine, in final formandu-se o matrice
+        ce va avea valoarea "1.00" pe diagonala principana (stanga sus -> dreapta jos).<br />
+
+        <p style=" font-family:georgia;"><b> Selectarea API-urilor:</b></p><br />
+            Utilizatorul are posibilitatea de a alege ce API-uri doreste sa interogheze pentru a obtine
+            valori destinate compararii cat mai apropiata de interesele lui. Pe baza check-box-urilor acesta
+            va putea selecta sau deselecta API-urile ce doreste sa le foloseasca. <br />
+        <img src="~/Content/Images/checkBoxes.png" style=" max-height:100%; max-width:100%;" /><br />
+
+            In functie de API-urile selectate tabelul poate capata dimensiuni diferite:<br />
+        <img src="~/Content/Images/comparisonTable.png" style=" max-height:100%; max-width:100%;" />
+        <img src="~/Content/Images/comparisonTable2.png" style=" max-height:100%; max-width:100%;" /><br />
+</div>
+</div>

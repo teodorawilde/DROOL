@@ -1,0 +1,13 @@
+C:\Users\teodora\Documents\Visual Studio 2013\Projects\MEFMvc\Drool.Exchange.Btce\bin\Debug\Drool.Exchange.Btce.dll
+C:\Users\teodora\Documents\Visual Studio 2013\Projects\MEFMvc\Drool.Exchange.Btce\bin\Debug\Drool.Exchange.Btce.pdb
+C:\Users\teodora\Documents\Visual Studio 2013\Projects\MEFMvc\Drool.Exchange.Btce\bin\Debug\Drool.Entities.dll
+C:\Users\teodora\Documents\Visual Studio 2013\Projects\MEFMvc\Drool.Exchange.Btce\bin\Debug\Newtonsoft.Json.dll
+C:\Users\teodora\Documents\Visual Studio 2013\Projects\MEFMvc\Drool.Exchange.Btce\bin\Debug\Drool.Entities.pdb
+C:\Users\teodora\Documents\Visual Studio 2013\Projects\MEFMvc\Drool.Exchange.Btce\bin\Debug\Newtonsoft.Json.xml
+C:\Users\teodora\Documents\Visual Studio 2013\Projects\MEFMvc\Drool.Exchange.Btce\obj\Debug\Drool.Exchange.Btce.csprojResolveAssemblyReference.cache
+C:\Users\teodora\Documents\Visual Studio 2013\Projects\MEFMvc\Drool.Exchange.Btce\obj\Debug\Drool.Exchange.Btce.dll
+C:\Users\teodora\Documents\Visual Studio 2013\Projects\MEFMvc\Drool.Exchange.Btce\obj\Debug\Drool.Exchange.Btce.pdb
+C:\Users\teodora\Documents\Visual Studio 2013\Projects\MEFMvc\Drool.Exchange.Btce\bin\Debug\MongoDB.Bson.dll
+C:\Users\teodora\Documents\Visual Studio 2013\Projects\MEFMvc\Drool.Exchange.Btce\bin\Debug\MongoDB.Driver.dll
+C:\Users\teodora\Documents\Visual Studio 2013\Projects\MEFMvc\Drool.Exchange.Btce\bin\Debug\MongoDB.Bson.xml
+C:\Users\teodora\Documents\Visual Studio 2013\Projects\MEFMvc\Drool.Exchange.Btce\bin\Debug\MongoDB.Driver.xml

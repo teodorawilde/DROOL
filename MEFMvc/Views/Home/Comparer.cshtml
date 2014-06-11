@@ -1,0 +1,234 @@
+﻿@{
+    ViewBag.Title = "Comparer";
+}
+
+<img src="~/Content/Images/Converter.jpg" style="max-width: 100%; margin-top: 20px; max-height: 100%; width: 1120px;" />
+<br/> <br/>
+
+<div style="max-height:100%; max-width:100%; overflow:hidden;">
+    <div class="row" ng-app="conversionApp" ng-controller="comparerController" style="margin-left:20px;" ng-cloak>
+        <div class="row">
+            <div class="">
+                <label ng-repeat="c in exchanges" style="display:inline;">
+                    <input type="checkbox"
+                           ng-click="listOfExchangesChanged(c.ExchangeName)"
+                           ng-checked="selectedExchanges.indexOf(c.ExchangeName) > -1"
+                           value="{{c.ExchangeName}}" />{{c.ExchangeName}}
+                </label>
+                <style>
+                    label {
+                        border-radius: 100%;
+                        position: relative;
+                    }
+
+                    input[type=checkbox] {
+                        padding-left: 5px;
+                        padding-right: 10px;
+                        border-radius: 4px;
+                        -webkit-appearance: button;
+                        border: double 2px #ffd800;
+                        background-color: #f5f5f5;
+                        color: #FFF;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        width: 17px;
+                        height: 17px;
+                        margin-right: 5px;
+                    }
+
+                        /**
+                     * Create the checkbox state for the tick
+                     */
+                        input[type=checkbox]:checked {
+                            background-color: #404040;
+                            border-left-color: #ffd800;
+                            border-right-color: #ffd800;
+                            cursor: pointer;
+                            z-index: 1;
+                        }
+
+                        input[type=checkbox]:hover {
+                            box-shadow: 0px 0px 10px #1300ff;
+                        }
+                </style>
+            </div>
+        </div>
+        <br /> <br />
+        @*Creating own directive*@
+        <div class="row" data-comparison-chart="comparisonMatrix" style="font-family:Verdana; display: block;"></div>
+    </div>
+
+</div>
+@section scripts{
+    <script type="text/javascript">
+    var conversionApp = angular.module('conversionApp', ['angular-bootstrap-select']);
+    //build table view
+    conversionApp.directive('comparisonChart', function () {
+        function renderChart(data, element) {
+            element.empty();
+
+            // rendering table
+            for (var i = 0; i < data.length; i++) {
+                var rowElement = angular.element('<div class="row">');
+                element.append(rowElement);
+                for (var j = 0; j < data.length; j++) {
+                    var cellElement = angular.element('<div class="col-md-1">').html(data[j][i]);
+                    rowElement.append(cellElement);
+                }
+            }
+        }
+
+        return function renderComparisonChart(scope, element, attributes){
+            var data = scope.$eval(attributes.comparisonChart);
+
+            //Adding watch -> changing exchanges
+            scope.$watch(function () { return scope.$eval(attributes.comparisonChart); }, function (newValue, oldValue) {
+                if (newValue) {
+                    renderChart(data, element);
+                }
+            }, true);
+
+        };
+
+    });
+    //get currencies
+    conversionApp.factory('currenciesFactory', function ($http, $q) {
+        var url = '/api/Currencies/';
+        return {
+            getExchanges: function ()
+            {
+                return $http.get('/api/Exchanges/GetExchanges');
+            },
+            getCurrencies: function (exchange) {
+                return $http.get(url + exchange);
+            },
+            convert: function (exchange, value, from, to) {
+                return $http.get(url + exchange + '/' + value + '/' + from + '/' + to);
+            },
+
+            //convert function for currencies
+            extendedConvert: function (exchange, value, from, to, i, j) {
+                var deferred = $q.defer();
+                $http.get(url + exchange + '/' + value + '/' + from + '/' + to).success(function (data, status) {
+                    var result = { data: data, i: i, j: j };
+                    deferred.resolve(result);
+                }).error(function(data, status){
+                    deferred.reject(data);
+                });
+
+                return deferred.promise;
+            }
+
+
+        };
+    });
+    conversionApp.controller('comparerController', function ($scope, $timeout, currenciesFactory) {
+
+        $scope.currencies = [];
+        $scope.exchanges = [];
+        $scope.selectedExchanges = [];
+        $scope.comparisonMatrix = [];
+
+        currenciesFactory.getExchanges()
+            .success(function (data, status, headers, config) {
+                $scope.exchanges = data
+                $scope.currentExchange = data[0].ExchangeName;
+                $scope.selectedExchanges.push($scope.currentExchange);
+                $scope.exchangeChanged();
+            });
+
+        $scope.exchangeChanged = function () {
+            $scope.currencies = [];
+            addCurrenciesForExchange($scope.currentExchange, afterExchangeChanged);
+        }
+        function addCurrenciesForExchange(exchangeName, callback) {
+            currenciesFactory.getCurrencies(exchangeName)
+                .success(function (data, status, headers, config) {
+                    for (var i = 0; i < data.length; i++) {
+                        var currenciesIndex = $scope.currencies.indexOf(data[i]);
+                        if (currenciesIndex < 0) {
+                            $scope.currencies.push(data[i]);
+                        }
+                    }
+                })
+                .error(function (data, status, headers, config) { alert(data); })
+                .then(function () { if (callback != null) { $timeout(callback, 0); } });
+        }
+
+        function afterExchangeChanged() {
+            
+            //empty the matrix
+            $scope.comparisonMatrix.length = 0;
+
+            //build the comparison matrix
+            var numberOfCurrencies = $scope.currencies.length;
+            if (numberOfCurrencies > 10) {
+                numberOfCurrencies = 10
+            }
+
+            for (var i = 0; i < numberOfCurrencies + 1; i++) {
+                $scope.comparisonMatrix[i] = [];
+                for (var j = 0; j < numberOfCurrencies + 1; j++) {
+                    if (i == 0 && j == 0) {
+                        $scope.comparisonMatrix[i][j] = '+/-';
+                    }
+                    if (i == 0)//col
+                    {
+                        if (j + 1 <= numberOfCurrencies) {
+                            $scope.comparisonMatrix[i][j + 1] = $scope.currencies[j];
+                        }
+                    } else if (j == 0) {
+                        $scope.comparisonMatrix[i][j] = $scope.currencies[i-1];
+                    }
+                    else {
+
+                        $scope.comparisonMatrix[i][j] = $scope.currencies[i-1] + '/' + $scope.currencies[j-1];
+                    }
+                }
+            }
+
+            
+            //populate with some data
+            for (var i = 0; i < $scope.comparisonMatrix.length; i++) {
+                for (var j = 0; j < $scope.comparisonMatrix[i].length; j++) {
+                    if (i > 0 && j > 0) {
+
+                        var from = $scope.comparisonMatrix[i][j].split('/')[0];
+                        var to = $scope.comparisonMatrix[i][j].split('/')[1];
+                        
+                        var promise = currenciesFactory.extendedConvert($scope.selectedExchanges, 1, from, to, i, j);
+                        
+                        promise.then(function (data) {
+                            $scope.comparisonMatrix[data.i][data.j] = parseFloat(data.data).toFixed(4);
+                            
+                            });
+                    }
+                }
+            }
+        }
+
+        $scope.listOfExchangesChanged = function (exchangeName) {
+            var idx = $scope.selectedExchanges.indexOf(exchangeName);
+
+            // is currently selected
+            if (idx > -1) {
+                $scope.selectedExchanges.splice(idx, 1);
+
+                $scope.currencies = [];
+                //rebuild the list of known currencies
+                for (var i = 0; i < $scope.selectedExchanges.length; i++) {
+                    addCurrenciesForExchange($scope.selectedExchanges[i], afterExchangeChanged);
+                }
+            }
+                // is newly selected
+            else {
+                $scope.selectedExchanges.push(exchangeName);
+
+                //add the currencies of the new exchange to the list
+                addCurrenciesForExchange(exchangeName, afterExchangeChanged);
+
+            }
+        };
+    });
+    </script>
+}

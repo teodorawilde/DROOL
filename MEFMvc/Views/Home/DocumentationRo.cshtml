@@ -1,0 +1,102 @@
+﻿
+@{
+    ViewBag.Title = "DocumentationRo";
+}
+
+@using (Html.BeginForm())
+{
+    <button type="button" onclick="window.location.href = '/Home/DocumentationEn'" class="btn btn-default" style="float: right; display: inline-block;">
+        <img src="/Content/Images/ukFlag.png" />
+    </button>
+
+    <button type="button" onclick="window.location.href = '/Home/DocumentationRo'" class="btn btn-default" style="float: right; display: inline-block;">
+        <img src="/Content/Images/romanianFlag.png" />
+    </button>
+}
+<br /><br />
+
+
+<h1 style="text-align: center; font-family: 'Wide Latin';max-height:100%; max-width:100%;"><b>Documentatie</b></h1>
+
+<h3 id="chapter1" style="font-family: Georgia;"><b>1. API-uri externe utilizate</b></h3>
+<div>
+    Aplicatia DROOL este un instrument Web destinat pentru vizualizarea, compararea si transformarea
+    cursurilor valutare virtuale intre ele sau in concordanta cu cele reale. In cadrul proiectului
+    au fost folosite un numar de cinci API-uri externe ce returneaza date in format JSON. Aceste
+    date sunt preluate in functie de API-ul folosit retinandu-se in obiecte dinamice informatii precum
+    valoarea in bitcoin si volumul tranzactiilor pentru fiecare tip de moneda in parte.
+    In ceea ce priveste monedele virtuale, aplicatia DROOL foloseste cele de tip Bitcoin si Litecoin.<br />
+
+    <b>API-uri externe utilizate:</b><br />
+    <b>1. Bitfinex: </b>https://api.bitfinex.com/v1/ticker/btcusd <br />
+    <b>2. Bitstamp: </b>https://www.bitstamp.net/api/ticker/ <br />
+    <b>3. Blockchain: </b>https://blockchain.info/ro/ticker <br />
+    <b>4. BTC-e: </b>https://btc-e.com/api/2/btc_usd/ticker <br />
+    <b>5. Local Bitcoins: </b>https://localbitcoins.com/bitcoinaverage/ticker-all-currencies/ <br />
+
+</div>
+<h3 id="chapter2" style="font-family: Georgia;"><b>2. Vizualizare valori valuta</b></h3><br />
+<div>
+    Aplicatia pune la dispozitia utilizatorilor o pagina destinata afisarii fluctuatiei dintre doua monezi.
+    Graful creat depinde in principal de API-urile selectate de utilizator, deoarece in functie de acestea
+    vor fi disponibile sau nu mai multe tipuri de monede valutare. In functie de API-urile selectate, valorile
+    intre care se realizeaza fluctuatia, vor fi diferite. Acest lucru se realizeaza deoarece fiecare API intoarce
+    valori diferite in functie de moneda dorita, iar atunci cand se aleg aceleasi monede pentru mai multe API-uri
+    simultan, valoarea rezultata se va calcula pe baza unei medii.
+
+    Utilizatorul are posibilitatea de a alege ce API-uri doreste sa interogheze pentru a obtine
+    valori destinate compararii cat mai apropiata de interesele lui. Pe baza check-box-urilor acesta
+    va putea selecta sau deselecta API-urile ce doreste sa le foloseasca. <br />
+
+    Graful arata fluctuatia intre valorile a doua monezi valutare. Valoarea unei monezi este impartita la 100 sau in 
+    cazul in care mai mult de un API este selectat, valoarea dorita este calculata printr-o medie a tuturor valorilor pentru 
+    acele combinatii de monezi din API-urile selectate. Pe aza Oy sunt afisate valorile fluctuatiei, iar moneda selectata din
+    casuta din partea stanga este de 100 de ori mai mica decat cea din dreapta ei.<b />
+</div>
+<h3 id="chapter3" style="font-family: Georgia;"><b>3. Convertor valuta </b></h3>
+<div>
+    Aplicatia pune la dispozitia utilizatorilor o pagina destinata conversiilor valutare.
+    Conversia valutara depinde in principal de API-urile selectate de utilizator, deoarece in
+    functie de acestea vor fi disponibile sau nu mai multe tipuri de monede valutare. In plus,
+    in functie de API-urile selectate, valorile rezultate in urma conversiilor vor fi diferite.
+    Acest lucru se realizeaza deoarece fiecare API intoarce valori diferite in functie de moneda
+    dorita, iar atunci cand conversia de face simultan in functie de mai multe API-uri valoarea
+    rezultata se va calcula pe baza unei medii. Media pentru a calcula rezultatul final este una
+    ponderata in care ponderii sunt reprezentati de volumele de tranzactie ale fiecarei aplicatii.<br />
+
+    Folosind tehnologii precul Angular Js si AJAX, in plan vizual, valorile se schimba odata cu
+    update-ul ce apare in API-urile folosite dar si atunci cand mai multe API-uri sunt selectate
+    sau deselectate, fara a mai trebui apasat pe vreun buton care sa apeleze functia de conversie.
+    Implicit va aparea 1 in casuta cea mai din stanga si va fi convertita in functie de tipul de
+    moneda ce apare selectat in partea dreapta. Pentru a schimba valoarea ce urmeaza a fi convertita
+    utilizatorul trebuie sa adauge in casuta in care initial aparea valoarea "1" o alta valoare
+    dorita de acesta.<br />
+</div>
+<h3 id="chapter4" style="font-family: Georgia;"><b>4. Comparare valori valuta </b></h3>
+<div>
+    Aplicatia pune la dispozitia utilizatorul si o pagina separata destinata compararii de
+    valori monetare. Aceasta comparare se realizeaza in functie de API-urile selectate la
+    momentul respectiv de catre utilizator. Intrucat fiecare API poate intoarce valori diferite
+    pentru acelasi tip de moneda, valorile afisate pe ecran vor fi strict influentate de API-ul
+    sau API-urile ce contribuie la procesul de comparare. <br />
+    In plan vizual, utilizatorul va putea face compararea pe baza unui tabel. Acesta va vedea
+    drept coloane ale tabelului tipurile de moneda suportate de API-ul selectat. Aceste monede
+    vor reaparea pe fiecare linie a tabelului in aceeasi ordine, in final formandu-se o matrice
+    ce va avea valoarea "1.00" pe diagonala principana (stanga sus -> dreapta jos).<br />
+
+    Utilizatorul are posibilitatea de a alege ce API-uri doreste sa interogheze pentru a obtine
+    valori destinate compararii cat mai apropiata de interesele lui. Pe baza check-box-urilor acesta
+    va putea selecta sau deselecta API-urile ce doreste sa le foloseasca. <br />
+    
+    Matricea este generata folosind tehnologiile JavaScript si Angular JS. Pentru fiecare casuta,
+    mai intai se vor forma string-uri de tipul "from/to" iar apoi va fi apelata functia de conversie
+    specifica API-urilor selectate. 
+</div>
+<h3 id="chapter4" style="font-family: Georgia;"><b>5. Alte observatii </b></h3>
+<div>
+    Aplicatia DROOL ofera un serviciu web exploatabil conform paradigmei REST:<br />
+    1. Server state-less<br/>
+    2. Create-Read-Update-Delete (MVC Project)<br/>
+    3. URI-uri - API/Currencies/Blockchain/1/EUR/BTC<br/>
+    4. Date in format JSON/XML<br/>
+</div>

@@ -1,0 +1,236 @@
+﻿@{
+    ViewBag.Title = "Visualizer";
+}
+
+<img src="~/Content/Images/currency.jpg" style="max-width: 100%; margin-top: 20px; max-height: 100%; width: 1120px;" />
+<br /> <br />
+
+<link href="~/Content/jquery.jqplot.min.css" rel="stylesheet" />
+
+
+
+<div ng-app="visualizerApp" ng-controller="simpleController" style="margin-left:20px;">
+    <label ng-repeat="c in exchanges" style="display:inline;">
+        <input type="checkbox" 
+               ng-click="listOfExchangesChanged(c.ExchangeName)"
+               
+               value="{{c.ExchangeName}}" />{{c.ExchangeName}}
+    </label>
+    <br /><br />
+    <style>
+        label {
+            border-radius: 100%;
+            position: relative;
+        }
+
+        input[type=checkbox] {
+            padding-left: 5px;
+            padding-right: 10px;
+            border-radius: 4px;
+            -webkit-appearance: button;
+            border: double 2px #ffd800;
+            background-color: #f5f5f5;
+            color: #FFF;
+            white-space: nowrap;
+            overflow: hidden;
+            width: 17px;
+            height: 17px;
+            margin-right: 5px;
+        }
+
+            /**
+                     * Create the checkbox state for the tick
+                     */
+            input[type=checkbox]:checked {
+                background-color: #404040;
+                border-left-color: #ffd800;
+                border-right-color: #ffd800;
+                cursor: pointer;
+                z-index: 1;
+            }
+
+            input[type=checkbox]:hover {
+                box-shadow: 0px 0px 10px #1300ff;
+            }
+    </style>
+
+    
+   
+    <div class="row">
+        <div class="col-md-offset-4 col-md-8">
+            <select class="selectpicker" name="InputFrom" id="InputFrom" ng-model="from" ng-change="valueFromChanged()"
+                    ng-options="opt for opt in currencies"></select>
+            <span style="font-size:20px; "> -> </span>
+            <select class="selectpicker" name="InputTo" id="InputTo" ng-model="to" ng-change="valueFromChanged()">
+                <option ng-repeat="curency in currencies" value="{{curency}}">{{curency}}</option>
+            </select>
+        </div>
+
+    </div>
+
+    <br /> <br />
+
+    <div id="chart1"></div>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/jqPlot/jquery.jqplot.min.js"></script>
+    <script type="text/javascript">
+
+        //selects values from APIs
+        var conversionApp = angular.module('visualizerApp', []);
+
+        conversionApp.factory('currenciesFactory', function ($http) {
+            var url = '/api/Currencies/';
+            return {
+                getExchanges: function () {
+                    return $http.get('/api/Exchanges/GetExchanges');
+                },
+                getCurrencies: function (exchange) {
+                    return $http.get(url + exchange);
+                },
+                convert: function (exchange, value, from, to) {
+                    return $http.get(url + exchange + '/' + value + '/' + from + '/' + to);
+                }
+            };
+        });
+
+        //gets values from APIs at every change/refresh in the currencies
+        conversionApp.controller('simpleController', function ($scope, $timeout, currenciesFactory) {
+            $scope.valuesArray = [[]];
+            $scope.exchanges = [];
+            $scope.selectedExchanges = [];
+
+            function updatePickers() {
+                $('.selectpicker').selectpicker('refresh');
+            }
+
+            //adds currencies for select API checkboxes
+            function addCurrenciesForExchange(exchangeName, callback) {
+                $scope.valuesArray = [[]];
+                currenciesFactory.getCurrencies(exchangeName)
+                    .success(function (data, status, headers, config) {
+                        for (var i = 0; i < data.length; i++) {
+                            var currenciesIndex = $scope.currencies.indexOf(data[i]);
+                            if (currenciesIndex < 0) {
+                                $scope.currencies.push(data[i]);
+                            }
+                        }
+                    })
+                    .error(function (data, status, headers, config) { alert(data); })
+                    .then(function () { if (callback != null) { $timeout(callback, 0); } });
+            }
+
+            //gets the selected exchanges when loading page
+            currenciesFactory.getExchanges()
+                .success(function (data, status, headers, config) {
+                    $scope.exchanges = data
+                    $scope.currentExchange = data[0].ExchangeName;
+                    $scope.selectedExchanges.push($scope.currentExchange);
+                    $scope.exchangeChanged();
+                });
+
+            //gets the currecies from the new API selected, and deselects the checkboxes deselected by the user
+            $scope.exchangeChanged = function () {
+                $scope.currencies = [];
+                addCurrenciesForExchange($scope.currentExchange, afterExchangeChanged);
+            }
+
+            //gets new values when a checkbox its pressed
+            $scope.renderer = function () {
+                return $scope.valuesArray;
+            };
+
+            //gets new values when exchanges are selected 
+            function afterExchangeChanged() {
+                $scope.valueFrom = 1;
+                $scope.valueTo = '...';
+                $scope.from = $scope.currencies[1];
+                $scope.to = $scope.currencies[0];
+
+                $scope.valueFromChanged();
+                updatePickers();
+            }
+
+
+
+            function executeConversion() {
+                if ($scope.selectedExchanges.length > 0) {
+                    currenciesFactory.convert($scope.selectedExchanges, $scope.valueFrom, $scope.from, $scope.to)
+                        .success(function (data, status, headers, config) { $scope.valueTo = data; })
+                        .error(function (data, status, headers, config) { })
+                        .then(function () { $timeout(updatePickers, 0); $timeout(executeConversion, 5000); });
+                }
+            }
+
+            //select currencies and shows the values in the textboxes
+            $scope.valueFromChanged = function () {
+                console.log($scope.currentExchange, $scope.valueFrom, $scope.from, $scope.to);
+                $scope.valueTo = '...';
+                executeConversion();
+            }
+
+            //when new currencies are selected the valuesArray will take only those values and 
+            //there will be drawn a new graph
+            $scope.$watch('to', function (newValue, oldValue) {
+                if (newValue) {
+                    $scope.valuesArray = [[]];
+                }
+            }, true);
+
+            $scope.$watch('from', function (newValue, oldValue) {
+                if (newValue) {
+                    $scope.valuesArray = [[]];
+                }
+            }, true);
+
+            //draws graph with the currencies selected
+            $scope.drawGraph = function () {
+                if ($scope.selectedExchanges.length > 0) {
+                    currenciesFactory.convert($scope.selectedExchanges, $scope.valueFrom, $scope.from, $scope.to)
+                        .success(function (data, status, headers, config) { $scope.valuesArray[0].push(data / 100); })
+                        .then(function () {
+                            if ($scope.plot1 != null) {
+                                $scope.plot1.destroy();
+                            }
+                            console.log($scope.valuesArray);
+                            $scope.plot1 = $.jqplot('chart1', $scope.valuesArray, {
+                                title: 'coin variation, 5 sec sampling interval',
+                            });
+                            $timeout(updatePickers, 0);
+                            $timeout($scope.drawGraph, 5000);
+                        });
+                   }
+            };
+
+            // toggle selection for a given exchange by name
+            $scope.listOfExchangesChanged = function (exchangeName) {
+                var idx = $scope.selectedExchanges.indexOf(exchangeName);
+
+                // is currently selected
+                if (idx > -1) {
+                    $scope.selectedExchanges.splice(idx, 1);
+
+                    $scope.currencies = [];
+                    //rebuild the list of known currencies
+                    for (var i = 0; i < $scope.selectedExchanges.length; i++) {
+                        addCurrenciesForExchange($scope.selectedExchanges[i], afterExchangeChanged);
+                    }
+                }
+                    // is newly selected
+                else {
+                    $scope.selectedExchanges.push(exchangeName);
+
+                    //add the currencies of the new exchange to the list
+                    addCurrenciesForExchange(exchangeName, afterExchangeChanged);
+
+                }
+
+                $scope.drawGraph();
+            };
+
+
+        });
+
+    </script>
+}

@@ -1,0 +1,13 @@
+C:\Users\teodora\Documents\Visual Studio 2013\Projects\MEFMvc\BusinessRules\bin\Debug\BusinessRules.dll
+C:\Users\teodora\Documents\Visual Studio 2013\Projects\MEFMvc\BusinessRules\bin\Debug\BusinessRules.pdb
+C:\Users\teodora\Documents\Visual Studio 2013\Projects\MEFMvc\BusinessRules\bin\Debug\Drool.Entities.dll
+C:\Users\teodora\Documents\Visual Studio 2013\Projects\MEFMvc\BusinessRules\bin\Debug\Newtonsoft.Json.dll
+C:\Users\teodora\Documents\Visual Studio 2013\Projects\MEFMvc\BusinessRules\bin\Debug\Drool.Entities.pdb
+C:\Users\teodora\Documents\Visual Studio 2013\Projects\MEFMvc\BusinessRules\bin\Debug\Newtonsoft.Json.xml
+C:\Users\teodora\Documents\Visual Studio 2013\Projects\MEFMvc\BusinessRules\obj\Debug\BusinessRules.csprojResolveAssemblyReference.cache
+C:\Users\teodora\Documents\Visual Studio 2013\Projects\MEFMvc\BusinessRules\obj\Debug\BusinessRules.dll
+C:\Users\teodora\Documents\Visual Studio 2013\Projects\MEFMvc\BusinessRules\obj\Debug\BusinessRules.pdb
+C:\Users\teodora\Documents\Visual Studio 2013\Projects\MEFMvc\BusinessRules\bin\Debug\MongoDB.Bson.dll
+C:\Users\teodora\Documents\Visual Studio 2013\Projects\MEFMvc\BusinessRules\bin\Debug\MongoDB.Driver.dll
+C:\Users\teodora\Documents\Visual Studio 2013\Projects\MEFMvc\BusinessRules\bin\Debug\MongoDB.Bson.xml
+C:\Users\teodora\Documents\Visual Studio 2013\Projects\MEFMvc\BusinessRules\bin\Debug\MongoDB.Driver.xml

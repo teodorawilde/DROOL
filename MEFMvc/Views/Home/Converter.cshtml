@@ -1,0 +1,197 @@
+﻿@model MEFMvc.ViewModels.ConvertionFormModel
+
+@{
+    ViewBag.Title = "Converter";
+}
+@using (Html.BeginForm())
+{
+    <div ng-app="conversionApp" ng-controller="simpleController" ng-cloak>
+        <strong>@Html.DisplayFor(m => m.StatusLabel)</strong>
+        @Html.ValidationSummary(false)
+        <fieldset>
+            @*Adding cover photo*@
+            <img src="~/Content/Images/BConverter.jpg" style="max-width: 100%; margin-top: 20px; max-height: 100%; width: 1120px;" />
+            <br /> <br />
+
+            <div>
+                @*Adding label and checkbox for each exchange in exchanges list (JSON form server)*@
+                <label ng-repeat="c in exchanges" style="display:inline; margin-left:5px;">
+                    <input type="checkbox" id="reg_checkbox" name="check"
+                           ng-click="listOfExchangesChanged(c.ExchangeName)"
+                           ng-checked="selectedExchanges.indexOf(c.ExchangeName) > -1"
+                           value="{{c.ExchangeName}}" />{{c.ExchangeName}}
+                </label>
+                <style>
+                    label {
+                        border-radius: 100%;
+                        position: relative;
+                    }
+
+                    input[type=checkbox] {
+                        padding-left: 5px;
+                        padding-right: 10px;
+                        border-radius: 4px;
+                        -webkit-appearance: button;
+                        border: double 2px #ffd800;
+                        background-color: #f5f5f5;
+                        color: #FFF;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        width: 17px;
+                        height: 17px;
+                        margin-right: 5px;
+                    }
+
+                        /**
+                     * Create the checkbox state for the tick
+                     */
+                        input[type=checkbox]:checked {
+                            background-color: #404040;
+                            border-left-color: #ffd800;
+                            border-right-color: #ffd800;
+                            cursor: pointer;
+                            z-index: 1;
+                        }
+
+                        input[type=checkbox]:hover {
+                            box-shadow: 0px 0px 10px #1300ff;
+                        }
+
+                </style>
+            </div>
+            <br />
+            <div class="row">
+                @*Adding dropdowns and text boxes for conversion*@
+                <div class="col-md-offset-4 col-md-8">
+                    @Html.TextBoxFor(m => m.InputValue, new { @ng_change = "valueFromChanged()", @ng_model = "valueFrom", @class = "form-control", @style = "width: 75px; display:inline;" })
+                    <select class="selectpicker" name="InputFrom" id="InputFrom" ng-model="from" ng-change="valueFromChanged()"
+                            ng-options="opt for opt in currencies"></select>
+                    <span style="font-size:20px; font-weight:bold"> = </span>
+                    @Html.TextBoxFor(m => m.ConversionResult, new { @ng_model = "valueTo", @class = "form-control", @style = "width: 75px; display:inline;" })
+                    <select class="selectpicker" name="InputTo" id="InputTo" ng-model="to" ng-change="valueFromChanged()">
+                        <option ng-repeat="curency in currencies" value="{{curency}}">{{curency}}</option>
+                    </select>
+                </div>
+
+            </div>
+        </fieldset>
+    </div>
+}
+
+
+@section scripts{
+<script type="text/javascript">
+    var conversionApp = angular.module('conversionApp', ['angular-bootstrap-select']);
+
+    conversionApp.factory('currenciesFactory', function ($http) {
+        var url = '/api/Currencies/';
+        return {
+            getExchanges: function ()
+            {
+                return $http.get('/api/Exchanges/GetExchanges');
+            },
+            getCurrencies: function (exchange) {
+                return $http.get(url + exchange);
+            },
+            convert: function (exchange, value, from, to) {
+                return $http.get(url + exchange + '/' + value + '/' + from + '/' + to);
+            }
+        };
+    });
+
+    conversionApp.controller('simpleController', function ($scope, $timeout, currenciesFactory) {
+        $scope.currencies = [];
+        $scope.exchanges = [];
+        $scope.selectedExchanges = [];
+
+        // Refresh dropdowns
+        function updatePickers() {
+            $('.selectpicker').selectpicker('refresh');
+        }
+
+        // Adding currencies for selected exchange
+        function addCurrenciesForExchange(exchangeName, callback) {
+            currenciesFactory.getCurrencies(exchangeName)
+                .success(function (data, status, headers, config) {
+                    for (var i = 0; i < data.length; i++) {
+                        var currenciesIndex = $scope.currencies.indexOf(data[i]);
+                        if (currenciesIndex < 0) {
+                            $scope.currencies.push(data[i]);
+                        }
+                    }
+                })
+                .error(function (data, status, headers, config) { alert(data); })
+                .then(function () { if (callback != null) { $timeout(callback, 0); } });
+        }
+
+        // Getting exchanges when loading the page
+        currenciesFactory.getExchanges()
+            .success(function (data, status, headers, config) {
+                $scope.exchanges = data
+                $scope.currentExchange = data[0].ExchangeName;
+                $scope.selectedExchanges.push($scope.currentExchange);
+                $scope.exchangeChanged();
+            });
+
+        // Deselected exchange
+        $scope.exchangeChanged = function () {
+            $scope.currencies = [];
+            addCurrenciesForExchange($scope.currentExchange, afterExchangeChanged);
+        }
+
+        function afterExchangeChanged()
+        {
+            $scope.valueFrom = 1;
+            $scope.valueTo = '...';
+            $scope.from = $scope.currencies[1];
+            $scope.to = $scope.currencies[0];
+
+            $scope.valueFromChanged();
+            updatePickers();
+        }
+
+        function executeConversion() {
+            if ($scope.selectedExchanges.length > 0) {
+                currenciesFactory.convert($scope.selectedExchanges, $scope.valueFrom, $scope.from, $scope.to)
+                    .success(function (data, status, headers, config) { $scope.valueTo = data; })
+                    .error(function (data, status, headers, config) { })
+                    .then(function () { $timeout(updatePickers, 0); $timeout(executeConversion, 5000); });
+            }
+        }
+
+        // Changing value in textbox
+        $scope.valueFromChanged = function () {
+            console.log($scope.currentExchange, $scope.valueFrom, $scope.from, $scope.to);
+            $scope.valueTo = '...';
+            executeConversion();
+        }
+
+        // toggle selection for a given exchange by name
+        $scope.listOfExchangesChanged = function (exchangeName) {
+            var idx = $scope.selectedExchanges.indexOf(exchangeName);
+
+            // is currently selected
+            if (idx > -1) {
+                $scope.selectedExchanges.splice(idx, 1);
+
+                $scope.currencies = [];
+                //rebuild the list of known currencies
+                for (var i = 0; i < $scope.selectedExchanges.length; i++) {
+                    addCurrenciesForExchange($scope.selectedExchanges[i], updatePickers);
+                }
+            }
+
+                // is newly selected
+            else {
+                $scope.selectedExchanges.push(exchangeName);
+
+                //add the currencies of the new exchange to the list
+                addCurrenciesForExchange(exchangeName, updatePickers);
+
+            }
+
+            executeConversion();
+        };
+    });
+</script>
+}
